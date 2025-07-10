@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Scraped Book Data</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 50px auto;
+      background: #1e1e1e;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      color: #bbbbbb;
+      font-size: 16px;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      background-color: #03dac6;
+      color: #000;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00bfa5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border: 1px solid #333;
+      text-align: left;
+    }
+
+    th {
+      background-color: #2a2a2a;
+      color: #ffffff;
+    }
+
+    tr:hover {
+      background-color: #2e2e2e;
+    }
+
+    code {
+      background: #2a2a2a;
+      color: #ffffff;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+      th, td {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Web Scraped Book Data</h1>
+    <p>Click the button below to load the scraped data from <code>books.csv</code>.</p>
+    <button onclick="loadCSV()">Load CSV</button>
+    <table id="csvTable"></table>
+  </div>
+
+  <script>
+    async function loadCSV() {
+      const response = await fetch('books.csv');
+      const data = await response.text();
+      const rows = data.trim().split('\n');
+      const table = document.getElementById('csvTable');
+      table.innerHTML = '';
+
+      rows.forEach((row, i) => {
+        const cols = row.split(',');
+        const tr = document.createElement('tr');
+        cols.forEach(col => {
+          const cell = document.createElement(i === 0 ? 'th' : 'td');
+          cell.textContent = col.replace(/"/g, '');
+          tr.appendChild(cell);
+        });
+        table.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>
